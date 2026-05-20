@@ -3,8 +3,8 @@ package subscribers
 import (
 	"context"
 
-	"github.com/example/authapp/backend/internal/modules/auth"
-	"github.com/example/authapp/backend/internal/platform/events"
+	"authapp/internal/modules/auth"
+	"authapp/internal/platform/events"
 	"go.uber.org/zap"
 )
 

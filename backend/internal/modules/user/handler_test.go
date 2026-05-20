@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/example/authapp/backend/internal/platform/authn"
-	"github.com/example/authapp/backend/internal/testutil"
+	"authapp/internal/platform/authn"
+	"authapp/internal/testutil"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"

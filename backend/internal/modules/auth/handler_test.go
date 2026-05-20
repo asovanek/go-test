@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/example/authapp/backend/internal/platform/events"
-	platformvalidator "github.com/example/authapp/backend/internal/platform/validator"
-	"github.com/example/authapp/backend/internal/testutil"
+	"authapp/internal/platform/events"
+	platformvalidator "authapp/internal/platform/validator"
+	"authapp/internal/testutil"
 	"github.com/gin-gonic/gin"
 )
 

@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/example/authapp/backend/internal/modules/user"
-	"github.com/example/authapp/backend/internal/platform/events"
-	"github.com/example/authapp/backend/internal/testutil"
+	"authapp/internal/modules/user"
+	"authapp/internal/platform/events"
+	"authapp/internal/testutil"
 )
 
 func newTestService(t *testing.T) (*Service, *events.Bus) {

@@ -3,7 +3,7 @@ package testutil
 import (
 	"testing"
 
-	"github.com/example/authapp/backend/internal/modules/user"
+	"authapp/internal/modules/user"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

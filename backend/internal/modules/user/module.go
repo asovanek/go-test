@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/example/authapp/backend/internal/platform/authn"
-	"github.com/example/authapp/backend/internal/platform/config"
+	"authapp/internal/platform/authn"
+	"authapp/internal/platform/config"
 )
 
 // Register mounts user routes.

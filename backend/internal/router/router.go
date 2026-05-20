@@ -6,12 +6,12 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 
-	"github.com/example/authapp/backend/internal/modules/auth"
-	"github.com/example/authapp/backend/internal/modules/user"
-	"github.com/example/authapp/backend/internal/platform/config"
-	"github.com/example/authapp/backend/internal/platform/events"
-	platformmw "github.com/example/authapp/backend/internal/platform/middleware"
-	"github.com/example/authapp/backend/internal/platform/validator"
+	"authapp/internal/modules/auth"
+	"authapp/internal/modules/user"
+	"authapp/internal/platform/config"
+	"authapp/internal/platform/events"
+	platformmw "authapp/internal/platform/middleware"
+	"authapp/internal/platform/validator"
 )
 
 // New builds the HTTP engine with all routes.

@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	"github.com/example/authapp/backend/internal/platform/authn"
+	"authapp/internal/platform/authn"
 )
 
 // Handler serves user HTTP endpoints.

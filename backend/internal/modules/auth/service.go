@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/example/authapp/backend/internal/modules/user"
-	"github.com/example/authapp/backend/internal/platform/authn"
-	"github.com/example/authapp/backend/internal/platform/config"
-	"github.com/example/authapp/backend/internal/platform/events"
+	"authapp/internal/modules/user"
+	"authapp/internal/platform/authn"
+	"authapp/internal/platform/config"
+	"authapp/internal/platform/events"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 )
