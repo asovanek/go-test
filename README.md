@@ -11,7 +11,41 @@ Monorepo with a modular Go (Gin + GORM + JWT) backend, React (Vite + TypeScript)
 - Swagger UI at `/swagger/index.html`
 - Per-app environment files
 
-## Quick start (Docker)
+## Quick start (local)
+
+From the repo root:
+
+```bash
+npm run setup    # copy .env files, install frontend + Go deps
+npm run dev      # start Postgres (Docker), backend, and frontend
+```
+
+| Service  | URL |
+|----------|-----|
+| Frontend | http://localhost:5173 |
+| API      | http://localhost:8080 |
+| Swagger  | http://localhost:8080/swagger/index.html |
+
+### Root scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run setup` | Copy `backend/.env` / `frontend/.env` if missing, install dependencies |
+| `npm run dev` | Start Postgres, then backend + frontend with hot reload |
+| `npm run dev:backend` | Run Go API only (Postgres must already be up) |
+| `npm run dev:frontend` | Run Vite dev server only |
+| `npm run db:up` | Start Postgres container |
+| `npm run db:down` | Stop Postgres container |
+| `npm run db:reset` | Wipe Postgres volume and restart (migrations re-run on backend start) |
+| `npm run db:logs` | Tail Postgres logs |
+| `npm run test` | Run backend tests (`go test ./...`) |
+| `npm run test:docker` | Run backend tests in Docker (no local Go required) |
+| `npm run swagger` | Regenerate Swagger docs (requires `swag` CLI) |
+| `npm run stop` | Stop Postgres |
+
+Requires **Docker** (for Postgres), **Go 1.23+**, and **Node 20+**.
+
+## Quick start (full Docker stack)
 
 ```bash
 cp backend/.env.example backend/.env
@@ -36,7 +70,9 @@ Docker Compose overrides `DATABASE_URL` for the backend to use the `postgres` se
 | GET | `/api/v1/me` | Bearer JWT | Current user profile |
 | GET | `/healthz` | No | Health check |
 
-## Local development (without Docker)
+## Local development
+
+Prefer the root scripts above (`npm run dev`). Manual steps:
 
 ### Backend
 
@@ -53,6 +89,14 @@ Swagger docs are generated during the Docker build. For local Swagger generation
 ```bash
 go install github.com/swaggo/swag/cmd/swag@v1.16.3
 swag init -g cmd/server/main.go -o docs --parseDependency --parseInternal
+```
+
+### Tests
+
+```bash
+npm test
+# or without local Go:
+npm run test:docker
 ```
 
 ### Frontend

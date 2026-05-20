@@ -1,0 +1,27 @@
+{
+  "name": "authapp",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Local development scripts for the Go + React auth app",
+  "scripts": {
+    "setup": "npm run setup:env && npm run install:all",
+    "setup:env": "test -f backend/.env || cp backend/.env.example backend/.env; test -f frontend/.env || cp frontend/.env.example frontend/.env",
+    "install:all": "npm install --prefix frontend && npm run install:backend",
+    "install:backend": "cd backend && go mod download",
+    "db:up": "docker compose -f docker-compose.dev.yml up -d",
+    "db:down": "docker compose -f docker-compose.dev.yml down",
+    "db:wait": "sh scripts/wait-for-postgres.sh",
+    "db:reset": "docker compose -f docker-compose.dev.yml down -v && npm run db:up && npm run db:wait",
+    "db:logs": "docker compose -f docker-compose.dev.yml logs -f postgres",
+    "dev": "npm run db:up && npm run db:wait && concurrently -k -n backend,frontend -c blue,green \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && go run ./cmd/server",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "test": "cd backend && go test ./...",
+    "test:docker": "docker run --rm -v \"$PWD/backend:/src\" -w /src golang:1.23-alpine sh -c \"go mod tidy && go test ./...\"",
+    "swagger": "cd backend && swag init -g cmd/server/main.go -o docs --parseDependency --parseInternal",
+    "stop": "npm run db:down"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
