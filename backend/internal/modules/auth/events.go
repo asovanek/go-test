@@ -3,7 +3,7 @@ package auth
 import (
 	"time"
 
-	"github.com/example/authapp/backend/internal/platform/events"
+	"authapp/internal/platform/events"
 	"github.com/google/uuid"
 )
 

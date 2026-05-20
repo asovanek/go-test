@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	platformvalidator "github.com/example/authapp/backend/internal/platform/validator"
+	platformvalidator "authapp/internal/platform/validator"
 )
 
 // Handler binds HTTP requests to auth service.

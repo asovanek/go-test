@@ -148,7 +148,7 @@ VITE_API_URL=http://localhost:8080
 ## Project structure
 
 ```
-backend/
+backend/                 # Go module: authapp (no domain — local imports like authapp/internal/...)
   cmd/server/          # entrypoint
   internal/
     platform/          # config, database, logger, events, authn, middleware, validator

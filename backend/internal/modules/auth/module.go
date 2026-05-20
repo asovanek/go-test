@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
-	"github.com/example/authapp/backend/internal/modules/user"
-	"github.com/example/authapp/backend/internal/platform/config"
-	"github.com/example/authapp/backend/internal/platform/events"
-	"github.com/example/authapp/backend/internal/platform/validator"
+	"authapp/internal/modules/user"
+	"authapp/internal/platform/config"
+	"authapp/internal/platform/events"
+	"authapp/internal/platform/validator"
 )
 
 // Register mounts auth routes under /auth.

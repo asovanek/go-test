@@ -7,16 +7,17 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/example/authapp/backend/internal/platform/events"
-	platformvalidator "github.com/example/authapp/backend/internal/platform/validator"
-	"github.com/example/authapp/backend/internal/testutil"
+	"authapp/internal/testdb"
+	"authapp/internal/platform/events"
+	platformvalidator "authapp/internal/platform/validator"
+	"authapp/internal/testutil"
 	"github.com/gin-gonic/gin"
 )
 
 func setupAuthRouter(t *testing.T) *gin.Engine {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
-	db := testutil.OpenSQLiteDB(t)
+	db := testdb.OpenSQLite(t)
 	bus := events.NewBus(nil)
 	cfg := testutil.TestConfig(t)
 	val := platformvalidator.New()

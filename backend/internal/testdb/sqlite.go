@@ -1,16 +1,16 @@
-package testutil
+package testdb
 
 import (
 	"testing"
 
-	"github.com/example/authapp/backend/internal/modules/user"
-	"gorm.io/driver/sqlite"
+	"authapp/internal/modules/user"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
-// NewSQLiteDB returns an in-memory database with the users schema migrated.
-func NewSQLiteDB(t *testing.T) *gorm.DB {
+// OpenSQLite opens an in-memory SQLite database with the users schema migrated.
+func OpenSQLite(t *testing.T) *gorm.DB {
 	t.Helper()
 	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),

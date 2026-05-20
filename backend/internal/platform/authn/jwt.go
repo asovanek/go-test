@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/example/authapp/backend/internal/platform/config"
+	"authapp/internal/platform/config"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
