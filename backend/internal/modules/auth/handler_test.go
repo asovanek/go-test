@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"authapp/internal/testdb"
 	"authapp/internal/platform/events"
 	platformvalidator "authapp/internal/platform/validator"
 	"authapp/internal/testutil"
@@ -16,7 +17,7 @@ import (
 func setupAuthRouter(t *testing.T) *gin.Engine {
 	t.Helper()
 	gin.SetMode(gin.TestMode)
-	db := testutil.OpenSQLiteDB(t)
+	db := testdb.OpenSQLite(t)
 	bus := events.NewBus(nil)
 	cfg := testutil.TestConfig(t)
 	val := platformvalidator.New()

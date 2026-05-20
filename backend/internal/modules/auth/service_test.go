@@ -8,12 +8,13 @@ import (
 
 	"authapp/internal/modules/user"
 	"authapp/internal/platform/events"
+	"authapp/internal/testdb"
 	"authapp/internal/testutil"
 )
 
 func newTestService(t *testing.T) (*Service, *events.Bus) {
 	t.Helper()
-	db := testutil.OpenSQLiteDB(t)
+	db := testdb.OpenSQLite(t)
 	repo := user.NewRepository(db)
 	bus := events.NewBus(nil)
 	cfg := testutil.TestConfig(t)

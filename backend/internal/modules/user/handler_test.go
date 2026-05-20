@@ -1,4 +1,4 @@
-package user
+package user_test
 
 import (
 	"encoding/json"
@@ -7,7 +7,9 @@ import (
 	"testing"
 	"time"
 
+	"authapp/internal/modules/user"
 	"authapp/internal/platform/authn"
+	"authapp/internal/testdb"
 	"authapp/internal/testutil"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -16,11 +18,11 @@ import (
 
 func TestHandler_Me(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	db := testutil.OpenSQLiteDB(t)
+	db := testdb.OpenSQLite(t)
 	cfg := testutil.TestConfig(t)
 
 	engine := gin.New()
-	Register(engine.Group("/api/v1"), db, cfg)
+	user.Register(engine.Group("/api/v1"), db, cfg)
 
 	t.Run("unauthorized without token", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodGet, "/api/v1/me", nil)
@@ -38,8 +40,8 @@ func TestHandler_Me(t *testing.T) {
 			t.Fatalf("hash password: %v", err)
 		}
 		now := time.Now().UTC()
-		repo := NewRepository(db)
-		if err := repo.Create(&User{
+		repo := user.NewRepository(db)
+		if err := repo.Create(&user.User{
 			ID:           id,
 			Email:        "me@example.com",
 			PasswordHash: string(hash),
@@ -63,7 +65,7 @@ func TestHandler_Me(t *testing.T) {
 			t.Fatalf("status = %d, body = %s", rec.Code, rec.Body.String())
 		}
 
-		var profile MeResponse
+		var profile user.MeResponse
 		if err := json.Unmarshal(rec.Body.Bytes(), &profile); err != nil {
 			t.Fatalf("decode profile: %v", err)
 		}
