@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+frontend/dist/
+
+# Environment
+backend/.env
+frontend/.env
+
+# Go
+backend/server
+backend/tmp/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Logs
+*.log
