@@ -39,7 +39,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     headers.set('Authorization', `Bearer ${token}`)
   }
 
-  const res = await fetch(`${baseURL}${path}`, { ...init, headers })
+  const res = await fetch(`${baseURL}${path}`, { ...init, headers }).catch(() => {
+    throw new Error(
+      `Cannot reach API at ${baseURL}. The backend may be down, or the browser blocked the request (CORS). Check the URL shown in the Vite terminal — if it is not port 5173, ensure CORS_ALLOW_LOCALHOST=true in backend/.env.`,
+    )
+  })
   const data = (await res.json().catch(() => ({}))) as T & ApiError
 
   if (!res.ok) {

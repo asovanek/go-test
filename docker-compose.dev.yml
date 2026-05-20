@@ -1,5 +1,7 @@
-# Local development: PostgreSQL only.
-# Backend and frontend run on the host via `npm run dev`.
+# Local development stack (no local Go required).
+# - postgres: database
+# - backend: Go API via golang image + volume mount (hot reload: restart container on code changes, or use air later)
+# Frontend runs on the host with Vite (`npm run dev:frontend`).
 
 services:
   postgres:
@@ -18,5 +20,26 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    image: golang:1.23-alpine
+    working_dir: /src
+    volumes:
+      - ./backend:/src
+      - go_mod_cache:/go/pkg/mod
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgres://app:secret@postgres:5432/app?sslmode=disable
+      MIGRATIONS_PATH: /src/migrations
+      CORS_ORIGIN: http://localhost:5173,http://localhost:3000
+      CORS_ALLOW_LOCALHOST: "true"
+    command: sh -c "go mod download && go run ./cmd/server"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
+  go_mod_cache:

@@ -19,7 +19,7 @@ func TestConfig(t *testing.T) *config.Config {
 		DatabaseURL: "unused",
 		JWTSecret:   "test-secret-key",
 		JWTExpiry:   time.Hour,
-		CORSOrigin:  "http://localhost:5173",
+		CORSOrigins: []string{"http://localhost:5173"},
 	}
 }
 

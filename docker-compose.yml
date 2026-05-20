@@ -24,7 +24,7 @@ services:
       - ./backend/.env
     environment:
       DATABASE_URL: postgres://app:secret@postgres:5432/app?sslmode=disable
-      CORS_ORIGIN: http://localhost:3000
+      CORS_ORIGIN: http://localhost:5173,http://localhost:3000
     depends_on:
       postgres:
         condition: service_healthy

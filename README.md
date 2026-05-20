@@ -31,19 +31,40 @@ npm run dev      # start Postgres (Docker), backend, and frontend
 | Script | Description |
 |--------|-------------|
 | `npm run setup` | Copy `backend/.env` / `frontend/.env` if missing, install dependencies |
-| `npm run dev` | Start Postgres, then backend + frontend with hot reload |
-| `npm run dev:backend` | Run Go API only (Postgres must already be up) |
-| `npm run dev:frontend` | Run Vite dev server only |
-| `npm run db:up` | Start Postgres container |
-| `npm run db:down` | Stop Postgres container |
+| `npm run dev` | Start backend (Docker) + frontend (Vite on host) |
+| `npm run dev:backend` | Run Go API in Docker (starts Postgres automatically) |
+| `npm run dev:frontend` | Run Vite dev server on the host |
+| `npm run db:up` | Start Postgres container only |
+| `npm run db:down` | Stop all dev containers |
 | `npm run db:reset` | Wipe Postgres volume and restart (migrations re-run on backend start) |
 | `npm run db:logs` | Tail Postgres logs |
-| `npm run test` | Run backend tests (`go test ./...`) |
-| `npm run test:docker` | Run backend tests in Docker (no local Go required) |
-| `npm run swagger` | Regenerate Swagger docs (requires `swag` CLI) |
-| `npm run stop` | Stop Postgres |
+| `npm run test` | Run backend tests in Docker |
+| `npm run swagger` | Regenerate Swagger docs in Docker |
+| `npm run stop` | Stop dev containers |
 
-Requires **Docker** (for Postgres), **Go 1.23+**, and **Node 20+**.
+Requires **Docker** and **Node 20+** only — Go runs inside a container, no local Go install needed.
+
+### Troubleshooting
+
+**"Failed to fetch" in the browser, nothing in backend logs**
+
+This is usually CORS or the backend not running yet:
+
+1. **Vite moved to another port** — if you see `Port 5173 is in use, trying another one...`, open the URL Vite prints (e.g. http://localhost:5174). With `CORS_ALLOW_LOCALHOST=true` (default in dev), any localhost port is allowed.
+
+2. **Which frontend URL are you using?**
+   - `npm run dev` → http://localhost:5173 (Vite)
+   - Full Docker stack → http://localhost:3000 (nginx)
+   - Both are allowed when `CORS_ORIGIN` includes `http://localhost:5173,http://localhost:3000` (see `backend/.env.example`).
+
+2. **Backend still starting** — the dev backend runs `go mod download` before the server listens (~20s on first start). Wait until `docker logs go-test-backend-1` shows `listening`.
+
+3. **Conflicting containers** — if you previously ran `docker compose up`, stop the old nginx frontend when using `npm run dev`:
+   ```bash
+   docker stop go-test-frontend-1
+   ```
+
+4. **Verify the API** — `curl http://localhost:8080/healthz` should return HTTP 200.
 
 ## Quick start (full Docker stack)
 
@@ -95,8 +116,6 @@ swag init -g cmd/server/main.go -o docs --parseDependency --parseInternal
 
 ```bash
 npm test
-# or without local Go:
-npm run test:docker
 ```
 
 ### Frontend

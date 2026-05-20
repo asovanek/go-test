@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -10,11 +11,12 @@ import (
 
 // Config holds application configuration loaded from environment.
 type Config struct {
-	Port       string
-	DatabaseURL string
-	JWTSecret  string
-	JWTExpiry  time.Duration
-	CORSOrigin string
+	Port               string
+	DatabaseURL        string
+	JWTSecret          string
+	JWTExpiry          time.Duration
+	CORSOrigins        []string
+	CORSAllowLocalhost bool
 }
 
 func Load(paths ...string) (*Config, error) {
@@ -45,12 +47,25 @@ func Load(paths ...string) (*Config, error) {
 	}
 
 	return &Config{
-		Port:        getenv("PORT", "8080"),
-		DatabaseURL: dbURL,
-		JWTSecret:   jwtSecret,
-		JWTExpiry:   duration,
-		CORSOrigin:  getenv("CORS_ORIGIN", "http://localhost:5173"),
+		Port:               getenv("PORT", "8080"),
+		DatabaseURL:        dbURL,
+		JWTSecret:          jwtSecret,
+		JWTExpiry:          duration,
+		CORSOrigins:        parseCORSOrigins(getenv("CORS_ORIGIN", "http://localhost:5173,http://localhost:3000")),
+		CORSAllowLocalhost: getenv("CORS_ALLOW_LOCALHOST", "true") == "true",
 	}, nil
+}
+
+func parseCORSOrigins(raw string) []string {
+	parts := strings.Split(raw, ",")
+	out := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			out = append(out, p)
+		}
+	}
+	return out
 }
 
 func getenv(key, def string) string {

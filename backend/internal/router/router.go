@@ -18,8 +18,12 @@ import (
 func New(cfg *config.Config, db *gorm.DB, bus *events.Bus, val *validator.V) *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	engine := gin.New()
+	engine.Use(gin.Logger())
 	engine.Use(gin.Recovery())
-	engine.Use(platformmw.CORS(cfg.CORSOrigin))
+	engine.Use(platformmw.CORS(platformmw.CORSOptions{
+		AllowedOrigins: cfg.CORSOrigins,
+		AllowLocalhost: cfg.CORSAllowLocalhost,
+	}))
 
 	api := engine.Group("/api/v1")
 	auth.Register(api.Group("/auth"), db, bus, cfg, val)
